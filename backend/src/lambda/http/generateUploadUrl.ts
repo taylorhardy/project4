@@ -1,11 +1,13 @@
-import 'source-map-support/register'
+import 'source-map-support/register';
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda';
 import * as AWS from 'aws-sdk';
 import { createLogger } from '../../utils/logger';
+import * as AWSXRay from "aws-xray-sdk";
 
 const logger = createLogger('generateUploadURL');
+const XAWS = AWSXRay.captureAWS(AWS);
 
-const s3Bucket = new AWS.S3({
+const s3Bucket = new XAWS.S3({
   signatureVersion: 'v4'
 })
 

@@ -2,7 +2,10 @@ import * as AWS from 'aws-sdk';
 import { TodoItem } from '../models/TodoItem';
 import * as uuid from 'uuid';
 import { CreateTodoRequest } from '../requests/CreateTodoRequest';
-const docClient = new AWS.DynamoDB.DocumentClient();
+import * as AWSXRay from "aws-xray-sdk";
+
+const XAWS = AWSXRay.captureAWS(AWS);
+const docClient = new XAWS.DynamoDB.DocumentClient();
 
 export async function getAllTodos(user): Promise<TodoItem[]> {
     const todos = await docClient.query({
